@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <div class="menu-item">
-      <a class="item-title" href="#">国家精品</a>
+    <div class="menu-item" v-for="item in classificationArray">
+      <a class="item-title" href="#">{{ item.name }}</a>
       <span class="item-child">
-        <template v-for="(item, index) in menuItems" :key="item">
-          <a href="#">{{ item }}</a>
-          <span v-if="index + 1 != menuItems?.length"> / </span>
+        <template v-for="(cItem, index) in item.children" :key="item">
+          <a href="#">{{ cItem.name }}</a>
+          <span v-if="index + 1 !== item.children?.length"> / </span>
         </template>
       </span>
     </div>
@@ -13,10 +13,26 @@
 </template>
 
 <script setup lang="ts">
+import {ref, watch} from "vue";
+import {useAxios} from '@vueuse/integrations/useAxios'
+import {Api} from "@/api";
+import {ListResponse} from "@/api/Response";
+import {Classification} from "@/models/Classification";
+import {AxiosResponse} from "axios";
 
-import { ref } from "vue";
 
-const menuItems = ref<Array<string>|null>(["大数据", "人工智障", "测试项"])
+const classificationArray = ref<Array<Classification>>()
+
+const { data, isFinished } = useAxios<ListResponse<Classification>, AxiosResponse<ListResponse<Classification>>, any>(Api.GetClassifications);
+watch(isFinished, () => {
+  if(!data.value || !data.value.success){
+    return
+  }
+  classificationArray.value = data.value.data.list;
+});
+
+
+
 </script>
 
 <style scoped>
