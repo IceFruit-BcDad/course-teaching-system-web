@@ -23,4 +23,9 @@ header {
   right: 0;
   z-index: 2;
 }
+
+main {
+  width: 1200px;
+  margin: 6rem auto;
+}
 </style>

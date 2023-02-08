@@ -26,6 +26,30 @@ const router = createRouter({
             // which is lazy-loaded when the route is visited.
             component: () => import("../views/AboutView.vue"),
         },
+        {
+            path: "/administrator",
+            name: "administrator",
+            auth: ["ADMIN"],
+            redirect: "/administrator/classification",
+            component: () => import("../views/AdministratorView.vue"),
+            children: [
+                {
+                    path: "/administrator/classification",
+                    name: "admin-classification",
+                    component: () => import("../views/AdminClassification.vue"),
+                },
+                {
+                    path: "/administrator/course",
+                    name: "admin-course",
+                    component: () => import("../views/AdminCourse.vue"),
+                },
+                {
+                    path: "/administrator/user",
+                    name: "admin-user",
+                    component: () => import("../views/AdminUser.vue"),
+                }
+            ]
+        }
     ],
 });
 

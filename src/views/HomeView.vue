@@ -10,8 +10,6 @@ import VerticalClassificationMenuVue from '@/components/VerticalClassificationMe
 
 <style scoped>
 .container {
-  width: 1200px;
-  margin: 6rem auto;
   display: flex;
 }
 </style>
