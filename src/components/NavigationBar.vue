@@ -1,6 +1,9 @@
 <script setup lang="ts">
 
-import {reactive, Ref, ref, toRef} from "vue";
+import {reactive, Ref, ref, toRef, watch, watchEffect} from "vue";
+import CtsButton from "@/components/CtsButton.vue";
+import {useCookies} from "@vueuse/integrations/useCookies";
+import {useUserStore} from "@/stores/user";
 
 interface Bar {
   homeTriggerStatus: boolean
@@ -21,6 +24,16 @@ function liMouseEnter(triggerStatus: Ref<boolean>){
 }
 function liMouseLeave(triggerStatus: Ref<boolean>){
   triggerStatus.value = false
+}
+
+const cookies = useCookies();
+const userCookies = ref(cookies.get(import.meta.env.VITE_COOKIES_NAME));
+
+const userStore = useUserStore();
+
+
+function login(){
+  //登录
 }
 </script>
 
@@ -52,6 +65,11 @@ function liMouseLeave(triggerStatus: Ref<boolean>){
           <div v-show="bar.adminTriggerStatus" class="b-s-line"></div>
         </li>
       </ul>
+      <div id="nav-user-body">
+        <div id="nav-login-btn" v-show="userCookies === undefined" @click="login">登录</div>
+        <div v-show="userCookies !== undefined">{{ userStore.user?.name }}</div>
+        <div id="nav-logout-btn" v-show="userCookies !== undefined">注销账号</div>
+      </div>
     </nav>
   </div>
 </template>
@@ -146,4 +164,16 @@ function liMouseLeave(triggerStatus: Ref<boolean>){
   height: 100%;
   width: 100%;
 }
+
+#nav-user-body {
+  flex-grow: 1;
+  display: flex;
+  justify-content: end;
+  color: white;
+}
+
+#nav-user-body > div {
+  cursor: pointer;
+}
+
 </style>

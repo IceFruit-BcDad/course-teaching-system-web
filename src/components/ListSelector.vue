@@ -25,7 +25,7 @@ import {computed, ref} from "vue";
 interface Props {
   dataSource: Data[],
   selectedKeys: string[],
-  isCanAdd: boolean
+  isCanAdd?: boolean
 }
 
 interface Data {
