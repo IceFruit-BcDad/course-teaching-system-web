@@ -26,6 +26,7 @@ header {
 
 main {
   width: 1200px;
-  margin: 6rem auto;
+  margin: 0 auto;
+  padding: 6rem 0;
 }
 </style>

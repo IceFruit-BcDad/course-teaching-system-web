@@ -100,10 +100,7 @@ function liMouseLeave(triggerStatus: Ref<boolean>){
   /*padding: 1rem;*/
   margin: 1rem 0rem 0 -0.5rem;
   border-radius: 0.2rem;
-  box-shadow: -0.1rem 0 0.4rem var(--vt-c-black),
-              0 0rem 0.4rem var(--vt-c-black),
-              0.1rem 0 0.4rem var(--vt-c-black),
-                0rem 0.1rem 0.4rem var(--vt-c-black);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .b-line {
