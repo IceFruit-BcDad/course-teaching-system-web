@@ -4,7 +4,7 @@ import {User} from "@/models/User";
 
 export const useUserStore = defineStore("user", () => {
    const user = ref<User|undefined>();
-   function setUser(u: User){
+   function setUser(u: User | undefined){
       user.value = u;
    }
    return { user, setUser};

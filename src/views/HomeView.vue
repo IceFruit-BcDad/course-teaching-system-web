@@ -4,12 +4,16 @@ import VerticalClassificationMenuVue from '@/components/VerticalClassificationMe
 
 <template>
   <div class="container">
-    <VerticalClassificationMenuVue />
+    <VerticalClassificationMenuVue id="vcm" />
   </div>
 </template>
 
 <style scoped>
 .container {
   display: flex;
+}
+
+#vcm {
+  height: 360px;
 }
 </style>

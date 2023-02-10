@@ -6,16 +6,18 @@
                     :data-source="level1Classification"
                     v-model:selected-keys="level1SelectedKeys"
                     @add="addLevel1Classification"
+                    @delete="deleteClassification(1)"
       />
     </div>
     <img id="arrow-right" src="../assets/arrow_right.png">
     <div class="classification-container">
-      <div>二级课程分类</div>
+      <div>{{ currentCanEditLevel1 !== undefined ? currentCanEditLevel1.name : "" }}二级课程分类</div>
       <ListSelector class="list-selector-level2"
                     :data-source="level2Classification"
                     v-model:selected-keys="level2SelectedKeys"
                     :is-can-add="level1SelectedKeys?.length === 1"
                     @add="addLevel2Classification"
+                    @delete="deleteClassification(2)"
       />
     </div>
     <ClassificationManager :show="modalData.modalStatus"
@@ -35,7 +37,7 @@ import {Classification} from "@/models/Classification";
 import {useAxios} from "@vueuse/integrations/useAxios";
 import {ListResponse} from "@/api/Response";
 import {Api} from "@/api";
-import ClassificationManager from "@/components/ClassificationManager.vue";
+import ClassificationManager from "@/components/ClassificationManagerModal.vue";
 
 interface Modal {
   modalStatus: boolean
@@ -56,6 +58,8 @@ const level2Classification = ref<Data[]>([]);
 
 const level1SelectedKeys = ref<string[]>([]);
 const level2SelectedKeys = ref<string[]>([]);
+
+const currentCanEditLevel1 = ref<Classification>()
 
 const classificationArray = ref<Array<Classification>>()
 
@@ -87,11 +91,12 @@ const isShowLevel2 = computed<boolean>(() => {
 
 watchEffect(() => {
   if(!isShowLevel2.value){
+    currentCanEditLevel1.value = undefined;
     level2Classification.value = [];
     return;
   }
   const selectedLevel1: Classification | undefined = classificationArray.value?.find<Classification>(item => item.id.toString() === level1SelectedKeys.value[0]);
-  modalData.parentId = selectedLevel1?.id ?? undefined;
+  currentCanEditLevel1.value = selectedLevel1;
   if (!selectedLevel1 || selectedLevel1.children === null || selectedLevel1.children?.length == 0){
     level2Classification.value = [];
     return;
@@ -113,8 +118,14 @@ function addLevel1Classification(){
 
 function addLevel2Classification(){
   modalData.level = 2;
-  console.log(modalData);
+  modalData.parentId = currentCanEditLevel1.value?.id
   modalData.modalStatus = true;
+}
+
+function deleteClassification(level: number){
+  if (level == 1){
+    // level1s
+  }
 }
 
 function ok(){

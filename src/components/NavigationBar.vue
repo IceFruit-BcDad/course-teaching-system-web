@@ -4,6 +4,12 @@ import {reactive, Ref, ref, toRef, watch, watchEffect} from "vue";
 import CtsButton from "@/components/CtsButton.vue";
 import {useCookies} from "@vueuse/integrations/useCookies";
 import {useUserStore} from "@/stores/user";
+import LoginModal from "@/components/LoginModal.vue";
+import {useAxios} from "@vueuse/integrations/useAxios";
+import {DataResponse, Response} from "@/api/Response";
+import {User} from "@/models/User";
+import {Api} from "@/api";
+import {useRouter} from "vue-router";
 
 interface Bar {
   homeTriggerStatus: boolean
@@ -26,14 +32,66 @@ function liMouseLeave(triggerStatus: Ref<boolean>){
   triggerStatus.value = false
 }
 
-const cookies = useCookies();
-const userCookies = ref(cookies.get(import.meta.env.VITE_COOKIES_NAME));
-
 const userStore = useUserStore();
+const userId = ref();
+const router = useRouter();
+const cookies = useCookies();
 
 
+
+function loadLoginInfo(){
+  userId.value = cookies.get("user-id");
+  if (userId.value){
+    loadUserInfo(userId.value);
+  }
+}
+
+loadLoginInfo();
+
+function loadUserInfo(userId: any){
+  const { data, isFinished, error } = useAxios<DataResponse<User>>(Api.GetUserInfo(userId));
+  watch(isFinished, () => {
+    if (error.value){
+      alert(error.value);
+      return;
+    }
+    if (!data.value?.success){
+      alert(data.value?.message ?? "用户未登录");
+      return;
+    }
+    userStore.setUser(data.value?.data)
+  })
+}
+
+
+const loginModalStatus = ref<boolean>(false);
 function login(){
-  //登录
+  loginModalStatus.value = true;
+}
+
+function loginCancel(){
+  loginModalStatus.value = false;
+}
+
+function loginOk(){
+  loginModalStatus.value = false;
+  loadLoginInfo();
+}
+
+function logout(){
+  const { data, isFinished, error } = useAxios<Response>(Api.Logout);
+  watch(isFinished, () => {
+    if (error.value){
+      alert(error.value);
+      return;
+    }
+    if (!data.value?.success){
+      alert(data.value?.message ?? "数据异常");
+      return;
+    }
+    userStore.setUser(undefined);
+    router.replace("/");
+  })
 }
 </script>
 
@@ -66,11 +124,13 @@ function login(){
         </li>
       </ul>
       <div id="nav-user-body">
-        <div id="nav-login-btn" v-show="userCookies === undefined" @click="login">登录</div>
-        <div v-show="userCookies !== undefined">{{ userStore.user?.name }}</div>
-        <div id="nav-logout-btn" v-show="userCookies !== undefined">注销账号</div>
+        <div id="nav-login-btn" v-show="userStore.user === undefined" @click="login">登录</div>
+        <div v-show="userStore.user !== undefined">{{ userStore.user?.name }}</div>
+        <div id="nav-logout-btn" v-show="userStore.user !== undefined" @click="logout">注销</div>
       </div>
     </nav>
+
+    <LoginModal :show="loginModalStatus" @cancel="loginCancel" @ok="loginOk"/>
   </div>
 </template>
 
@@ -174,6 +234,7 @@ function login(){
 
 #nav-user-body > div {
   cursor: pointer;
+  margin-right: 8px;
 }
 
 </style>

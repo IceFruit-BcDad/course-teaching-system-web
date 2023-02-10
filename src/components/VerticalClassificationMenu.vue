@@ -43,6 +43,7 @@ watch(isFinished, () => {
   padding-bottom: 1rem;
   border-radius: .4rem;
   background-color: white;
+  flex-direction: column;
 }
 
 .menu-item {
