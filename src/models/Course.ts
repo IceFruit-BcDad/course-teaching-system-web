@@ -1,11 +1,24 @@
-export class Course {
-  id: string;
-  name: string;
-  desc: string;
+import {Chapter} from "@/models/Chapter";
 
-  constructor(id: string, name: string, desc: string) {
+export class Course {
+  id: number;
+  name: string;
+  classificationId: number;
+  classificationName: string;
+  createTime: string;
+  lastModifyTime: string;
+  coverUrl: string;
+  chapters: Chapter[]
+
+
+  constructor(id: number, name: string, classificationId: number, classificationName: string, createTime: string, lastModifyTime: string, coverUrl: string, chapters: Chapter[]) {
     this.id = id;
     this.name = name;
-    this.desc = desc;
+    this.classificationId = classificationId;
+    this.classificationName = classificationName;
+    this.createTime = createTime;
+    this.lastModifyTime = lastModifyTime;
+    this.coverUrl = coverUrl;
+    this.chapters = chapters;
   }
 }

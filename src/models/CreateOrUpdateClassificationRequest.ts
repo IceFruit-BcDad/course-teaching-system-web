@@ -1,6 +1,6 @@
 export class CreateOrUpdateClassificationRequest {
     level: number;
-    parentId?: bigint;
+    parentId?: number;
     name: string;
 
 

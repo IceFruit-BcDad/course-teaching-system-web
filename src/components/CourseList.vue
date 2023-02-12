@@ -3,9 +3,9 @@
     import { Course } from "@/models/Course";
     import CourseItem from "./CourseItem.vue";
     const courseList = ref<Array<Course>>(new Array<Course>());
-    for(let index of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]){
-        courseList.value.push(new Course(<string><unknown>index, "测试" + index, "描述" + index));
-    }
+    // for(let index of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]){
+    //     courseList.value.push(new Course(<string><unknown>index, "测试" + index, "描述" + index));
+    // }
     
 </script>
 

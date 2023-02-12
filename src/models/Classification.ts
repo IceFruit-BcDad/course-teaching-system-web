@@ -1,11 +1,11 @@
 export class Classification {
-    id: bigint;
+    id: number;
     name: string;
     level: number;
-    parentId!: bigint;
+    parentId!: number;
     children!: Classification[];
 
-    constructor(id: bigint, name: string, level: number) {
+    constructor(id: number, name: string, level: number) {
         this.id = id;
         this.name = name;
         this.level = level;

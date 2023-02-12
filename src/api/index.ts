@@ -3,7 +3,7 @@ export class Api {
 
     public static CreateClassification = "/api/classification";
 
-    public static UpdateClassification(id: bigint): string{
+    public static UpdateClassification(id: number): string{
         return "/api/classification/" + id.toString();
     }
 
@@ -16,6 +16,10 @@ export class Api {
 
     public static GetUserInfo(userId: any): string{
         return "/api/user/" + userId;
+    }
+
+    public static GetCourses(offset: number, limit: number): string{
+        return "/api/course?" + "offset=" + offset + "&limit=" + limit;
     }
 
 }

@@ -1,5 +1,5 @@
 export class User {
-    id: bigint;
+    id: number;
     name: string;
     phoneNumber: string;
     type: number;
@@ -7,7 +7,7 @@ export class User {
     createTime: string;
 
 
-    constructor(id: bigint, name: string, phoneNumber: string, type: number, typeName: string, createTime: string) {
+    constructor(id: number, name: string, phoneNumber: string, type: number, typeName: string, createTime: string) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;

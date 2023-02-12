@@ -42,7 +42,7 @@ const props = defineProps<{
   show: boolean,
   data?: Classification,
   level: number,
-  parentId?: bigint
+  parentId?: number
 }>();
 
 const emit = defineEmits<{
@@ -101,7 +101,7 @@ function create(){
   })
 }
 
-function update(id: bigint, level: number, parentId: bigint){
+function update(id: number, level: number, parentId: number){
   const c = new CreateOrUpdateClassificationRequest(level, name.value)
   c.parentId = parentId;
   const { data, isFinished, error } = useAxios<DataResponse<Classification>>(Api.UpdateClassification(id), {

@@ -16,7 +16,7 @@ export interface DataResponse<T> extends Response {
 export interface DtoList<T> {
     limit: number;
     offset: number;
-    total: bigint;
+    total: number;
     totalPages: number;
     list: T[];
 }

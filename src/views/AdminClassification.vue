@@ -47,7 +47,7 @@ interface Modal {
   modalStatus: boolean
   level: number
   data?: Classification
-  parentId?: bigint
+  parentId?: number
 }
 
 const modalData: Modal = reactive({ modalStatus: false, level: 1 });
