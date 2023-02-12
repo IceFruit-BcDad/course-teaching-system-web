@@ -62,6 +62,9 @@ const level = computed<number>(() => {
 })
 
 const name = ref<string>(props.data?.name ?? "");
+watch(() => props.data?.name, (value) => {
+  name.value = value ?? "";
+});
 
 function ok(){
   if (name.value.length == 0){
@@ -71,7 +74,7 @@ function ok(){
   if (props.data === undefined){
     create();
   } else {
-    update(props.data.id, props.data.level)
+    update(props.data.id, props.data.level, props.data.parentId)
   }
 }
 
@@ -98,15 +101,16 @@ function create(){
   })
 }
 
-function update(id: bigint, level: number){
+function update(id: bigint, level: number, parentId: bigint){
   const c = new CreateOrUpdateClassificationRequest(level, name.value)
+  c.parentId = parentId;
   const { data, isFinished, error } = useAxios<DataResponse<Classification>>(Api.UpdateClassification(id), {
     method: "PUT",
-    params: c
+    data: c
   });
   watch(isFinished, () => {
-    if (error){
-      alert(error);
+    if (error.value){
+      alert(error.value);
       return;
     }
     if (!data.value?.success){

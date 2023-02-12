@@ -5,10 +5,13 @@ import router from "./router";
 import "./assets/main.css";
 import { createPinia } from 'pinia'
 
+import { Table } from 'ant-design-vue';
+
 const pinia = createPinia()
 const app = createApp(App);
 
 app.use(router);
 app.use(pinia);
+app.use(Table);
 
 app.mount("#app");

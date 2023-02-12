@@ -7,6 +7,7 @@
                     v-model:selected-keys="level1SelectedKeys"
                     @add="addLevel1Classification"
                     @delete="deleteClassification(1)"
+                    @edit="(key) => editClassification(1, key)"
       />
     </div>
     <img id="arrow-right" src="../assets/arrow_right.png">
@@ -18,6 +19,7 @@
                     :is-can-add="level1SelectedKeys?.length === 1"
                     @add="addLevel2Classification"
                     @delete="deleteClassification(2)"
+                    @edit="(key) => editClassification(2, key)"
       />
     </div>
     <ClassificationManager :show="modalData.modalStatus"
@@ -35,9 +37,11 @@ import ListSelector from "@/components/ListSelector.vue";
 import {computed, reactive, ref, watch, watchEffect} from "vue";
 import {Classification} from "@/models/Classification";
 import {useAxios} from "@vueuse/integrations/useAxios";
-import {ListResponse} from "@/api/Response";
+import {Response, ListResponse} from "@/api/Response";
 import {Api} from "@/api";
 import ClassificationManager from "@/components/ClassificationManagerModal.vue";
+import {User} from "@/models/User";
+import {useUserStore} from "@/stores/user";
 
 interface Modal {
   modalStatus: boolean
@@ -101,6 +105,7 @@ watchEffect(() => {
     level2Classification.value = [];
     return;
   }
+  level2Classification.value = [];
   for (let i = 0; i < selectedLevel1.children.length; i++){
     let item = selectedLevel1.children[i];
     level2Classification.value.push({
@@ -114,18 +119,55 @@ watchEffect(() => {
 function addLevel1Classification(){
   modalData.level = 1;
   modalData.modalStatus = true;
+  modalData.parentId = undefined;
+  modalData.data = undefined;
 }
 
 function addLevel2Classification(){
   modalData.level = 2;
   modalData.parentId = currentCanEditLevel1.value?.id
   modalData.modalStatus = true;
+  modalData.data = undefined;
+}
+
+function editClassification(level: number, key: string){
+  // modalData.data
+  let c: Classification | undefined
+  if (level == 1){
+    c = currentCanEditLevel1.value;
+  } else {
+    c = currentCanEditLevel1.value?.children
+        .find<Classification>(item => item.id.toString() === key);
+  }
+  if (!c){
+    alert("未找到对应分类");
+    return;
+  }
+  modalData.data = c;
+  modalData.modalStatus = true;
 }
 
 function deleteClassification(level: number){
+  let ids: string
   if (level == 1){
-    // level1s
+    ids = level1SelectedKeys.value.join(",");
+  } else {
+    ids = level2SelectedKeys.value.join(",");
   }
+  const { data, isFinished, error } = useAxios<Response>(Api.DeleteClassifications(ids), {
+    method: "delete"
+  });
+  watch(isFinished, () => {
+    if (error.value){
+      alert(error.value);
+      return;
+    }
+    if (!data.value?.success){
+      alert(data.value?.message ?? "数据异常");
+      return;
+    }
+    loadData();
+  })
 }
 
 function ok(){

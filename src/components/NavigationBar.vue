@@ -135,6 +135,9 @@ function logout(){
 </template>
 
 <style scoped>
+ol, ul, dl {
+  margin: 0;
+}
 #header-container {
   background-color: var(--vt-c-main);
 }
