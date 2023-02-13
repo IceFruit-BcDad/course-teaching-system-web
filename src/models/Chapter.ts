@@ -20,3 +20,17 @@ export class Chapter {
         this.children = children;
     }
 }
+
+export class CreateOrUpdateChapter {
+    chapterId?: number;
+    courseId: number;
+    parentId?: number;
+    title: string;
+    contentUrl?: string;
+
+
+    constructor(courseId: number, title: string) {
+        this.courseId = courseId;
+        this.title = title;
+    }
+}

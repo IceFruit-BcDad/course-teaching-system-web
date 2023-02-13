@@ -40,8 +40,6 @@ import {useAxios} from "@vueuse/integrations/useAxios";
 import {Response, ListResponse} from "@/api/Response";
 import {Api} from "@/api";
 import ClassificationManager from "@/components/ClassificationManagerModal.vue";
-import {User} from "@/models/User";
-import {useUserStore} from "@/stores/user";
 
 interface Modal {
   modalStatus: boolean
@@ -71,7 +69,7 @@ function loadData(){
   const { data, isFinished } = useAxios<ListResponse<Classification>>(Api.GetClassifications);
   watch(isFinished, () => {
     if(!data.value || !data.value.success){
-      return
+      return;
     }
     classificationArray.value = data.value.data.list;
     level1Classification.value.splice(0);

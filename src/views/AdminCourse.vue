@@ -10,9 +10,15 @@
              :loading="tableData.isLoading"
              @change="handleTableChange"
     >
-      <template #bodyCell="{ column }">
+      <template #bodyCell="{ record, column }">
         <template v-if="column.key === 'action'">
-          <a>Delete</a>
+          <a @click="moreCourse(record.id)">详情</a>
+          <a @click="editCourse(record.id)" style="margin-left: 10px;">编辑</a>
+          <a-popconfirm title="确定要删除该课程吗?包含的章节也将一起彻底删除！"
+                        ok-text="确定" cancel-text="取消"
+                        @confirm="deleteCourse(record.id)">
+            <a style="margin-left: 10px;">删除</a>
+          </a-popconfirm>
         </template>
       </template>
       <!--    <template #expandedRowRender="{ record }">-->
@@ -23,24 +29,25 @@
       <!--    </template>-->
     </a-table>
 
-    <CourseManagerModal :show="modalData.modalStatus" />
+    <CourseManagerModal :show="modalData.modalStatus" :data="modalData.data" @cancel="modalCancel" @ok="modalOk"/>
   </div>
 </template>
 
 <script setup lang="ts">
 import {useAxios} from "@vueuse/integrations/useAxios";
-import {DtoList, ListResponse} from "@/api/Response";
+import {DtoList, ListResponse, Response} from "@/api/Response";
 import {Api} from "@/api";
 import {computed, reactive, watch} from "vue";
 import {Course} from "@/models/Course";
 import type {TableProps} from "ant-design-vue";
 import CtsButton from "@/components/CtsButton.vue";
 import CourseManagerModal from "@/components/CourseManagerModal.vue";
+import {message} from "ant-design-vue";
+import {useRouter} from "vue-router";
 
 interface Modal {
   modalStatus: boolean,
-  data?: Course,
-  classificationId?: number
+  data?: Course
 }
 
 interface TableData {
@@ -51,6 +58,8 @@ interface TableData {
   totalPages: number;
   isLoading: boolean;
 }
+
+const router = useRouter();
 
 const modalData: Modal = reactive({ modalStatus: false});
 
@@ -72,10 +81,11 @@ const tableData: TableData = reactive({
 const pagination = computed(() => ({
   total: tableData.total,
   current: tableData.offset / tableData.limit + 1,
-  pageSize: tableData.totalPages,
+  pageSize: tableData.limit,
 }));
 
 function handleTableChange(pag: any){
+  console.log(pag);
   loadData(pag.current * tableData.limit);
 }
 
@@ -89,14 +99,56 @@ function loadData(offset: number = 0){
     tableData.offset = data.value?.data.offset;
     tableData.total = data.value?.data.total;
     tableData.totalPages = data.value?.data.totalPages;
+    console.log(tableData);
   });
 }
 
 loadData();
 
-function addCourse(){
+function deleteCourse(id: number){
+  const { data, isFinished, error } = useAxios<Response>(Api.DeleteCourse(id), {
+    method: "delete"
+  });
+  watch(isFinished, () => {
+    if (error.value){
+      alert(error.value);
+      return;
+    }
+    if (!data.value?.success){
+      alert(data.value?.message ?? "数据异常");
+      return;
+    }
+    loadData();
+  })
+}
+
+function editCourse(id: number){
+  const course = tableData.dataSource.find<Course>(item => item.id == id);
+  if (!course){
+    message.error("未找到改项");
+  }
+  modalData.data = course;
   modalData.modalStatus = true;
 }
+
+function moreCourse(id: number){
+  router.push("/administrator/chapter/" + id);
+}
+
+function addCourse(){
+  modalData.data = undefined;
+  modalData.modalStatus = true;
+}
+
+function modalCancel(){
+  modalData.modalStatus = false;
+}
+
+function modalOk(){
+  modalData.modalStatus = false;
+  loadData();
+}
+
 
 </script>
 

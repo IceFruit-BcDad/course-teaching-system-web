@@ -7,12 +7,13 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AButton: typeof import('ant-design-vue/es')['Button']
+    APopconfirm: typeof import('ant-design-vue/es')['Popconfirm']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
-    ASpace: typeof import('ant-design-vue/es')['Space']
     ATable: typeof import('ant-design-vue/es')['Table']
+    AUpload: typeof import('ant-design-vue/es')['Upload']
     Carousel: typeof import('./src/components/Carousel.vue')['default']
+    ChapterManagerModal: typeof import('./src/components/ChapterManagerModal.vue')['default']
     ClassificationManagerModal: typeof import('./src/components/ClassificationManagerModal.vue')['default']
     CourseItem: typeof import('./src/components/CourseItem.vue')['default']
     CourseList: typeof import('./src/components/CourseList.vue')['default']

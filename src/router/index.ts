@@ -44,6 +44,12 @@ const router = createRouter({
                     component: () => import("../views/AdminCourse.vue"),
                 },
                 {
+                    path: "/administrator/chapter/:id",
+                    name: "admin-chapter",
+                    component: () => import("../views/AdminChapter.vue"),
+                    props: true,
+                },
+                {
                     path: "/administrator/user",
                     name: "admin-user",
                     component: () => import("../views/AdminUser.vue"),

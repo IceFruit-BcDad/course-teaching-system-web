@@ -40,7 +40,7 @@ const cookies = useCookies();
 
 
 function loadLoginInfo(){
-  userId.value = cookies.get("user-id");
+  userId.value = cookies.get("icefruit-current-user-id");
   if (userId.value){
     loadUserInfo(userId.value);
   }
@@ -117,6 +117,7 @@ function logout(){
             <ul class="ul-g admin-nav">
               <li class="li-admin"><RouterLink class="admin-link" to="/administrator/classification">分类</RouterLink></li>
               <li class="li-admin"><RouterLink class="admin-link" to="/administrator/course">课程</RouterLink></li>
+<!--              <li class="li-admin"><RouterLink class="admin-link" to="/administrator/chapter">章节</RouterLink></li>-->
               <li class="li-admin"><RouterLink class="admin-link" to="/administrator/user">用户</RouterLink></li>
             </ul>
           </div>

@@ -22,3 +22,15 @@ export class Course {
     this.chapters = chapters;
   }
 }
+
+export class CreateOrUpdateCourseRequest {
+  classificationId: number;
+  name: string;
+  coverUrl: string;
+
+  constructor(classificationId: number, name: string, coverUrl: string) {
+    this.classificationId = classificationId;
+    this.name = name;
+    this.coverUrl = coverUrl;
+  }
+}
