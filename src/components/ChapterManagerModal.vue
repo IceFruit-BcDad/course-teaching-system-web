@@ -40,20 +40,22 @@
 <script setup lang="ts">
 import CtsButton from "@/components/CtsButton.vue";
 import Modal from "@/components/Modal.vue";
-import {Classification} from "@/models/Classification";
 import {computed, ref, watch, watchEffect} from "vue";
-import {useAxios} from "@vueuse/integrations/useAxios";
 import {DataResponse, ListResponse} from "@/api/Response";
 import {Api} from "@/api";
-import {Course, CreateOrUpdateCourseRequest} from "@/models/Course";
-import {SelectProps} from "ant-design-vue/lib/select";
 import {message, UploadFile} from 'ant-design-vue';
 import type { UploadChangeParam, UploadProps } from 'ant-design-vue';
-import {Chapter} from "@/models/Chapter";
+import {Chapter, CreateOrUpdateChapterRequest} from "@/models/Chapter";
+import 'ant-design-vue/es/message/style/css';
+import { UploadOutlined } from "@ant-design/icons-vue";
+import {useAxios} from "@vueuse/integrations/useAxios";
+
 
 const props = defineProps<{
   show: boolean,
   data?: Chapter,
+  courseId: number,
+  parentId?: number
 }>();
 
 const emit = defineEmits<{
@@ -79,6 +81,7 @@ watch(() => props.data, async (chapter) => {
     chapterTitle.value = chapter.title;
     fileName.value = chapter.contentUrl;
   } else {
+    fileList.value = []
     fileName.value = "";
     chapterTitle.value = "";
   }
@@ -103,82 +106,72 @@ const handleChange = (info: UploadChangeParam<UploadFile<DataResponse<string>>>)
 };
 
 const beforeUpload = (file: UploadProps['fileList'][number]) => {
-  const isLt2M = file.size / 1024 / 1024 < 2;
+  console.log(file.type);
+  const isLt2M = file.size / 1024 / 1024 < 10;
   if (!isLt2M) {
     message.error('Image must smaller than 2MB!');
   }
   return isLt2M;
 };
 
-// function ok(){
-//   if (chapterTitle.value.length == 0){
-//     alert("必须输入课程名称！");
-//     return;
-//   }
-//   if (fileName.value.length == 0){
-//     alert("必须上传课程封面！");
-//     return;
-//   }
-//   if (classificationLevel1Id.value == 0){
-//     alert("必须选择课程所属分类！");
-//     return;
-//   }
-//   if (props.data === undefined){
-//     create();
-//   } else {
-//     update(props.data.id);
-//   }
-// }
-//
-// function create(){
-//   let cId: number;
-//   if(classificationLevel2Id.value != 0){
-//     cId = classificationLevel2Id.value;
-//   } else {
-//     cId = classificationLevel1Id.value;
-//   }
-//   const c = new CreateOrUpdateCourseRequest(cId, chapterTitle.value, fileName.value);
-//   const { data, isFinished, error } = useAxios<DataResponse<Course>>(Api.CreateCourse, {
-//     method: "post",
-//     data: c
-//   });
-//   watch(isFinished, () => {
-//     if (error.value){
-//       alert(error.value);
-//       return;
-//     }
-//     if (!data.value?.success){
-//       alert(data.value?.message ?? "数据异常");
-//       return;
-//     }
-//     emit("ok");
-//   })
-// }
-//
-// function update(id: number){
-//   let cId: number;
-//   if(classificationLevel2Id.value != 0){
-//     cId = classificationLevel2Id.value;
-//   } else {
-//     cId = classificationLevel1Id.value;
-//   }
-//   const c = new CreateOrUpdateCourseRequest(cId, chapterTitle.value, fileName.value);
-//   const { data, isFinished, error } = useAxios<DataResponse<Course>>(Api.UpdateCourse(id), {
-//     method: "PUT",
-//     data: c
-//   });
-//   watch(isFinished, () => {
-//     if (error.value){
-//       alert(error.value);
-//       return;
-//     }
-//     if (!data.value?.success){
-//       alert(data.value?.message ?? "数据异常");
-//       return;
-//     }
-//     emit("ok");
-//   })
-// }
+function ok(){
+  if (chapterTitle.value.length == 0){
+    message.error("必须输入课程名称！");
+    return;
+  }
+  if (fileName.value.length == 0){
+    message.error("必须上传章节内容文件！");
+    return;
+  }
+  if (props.data === undefined){
+    create();
+  } else {
+    update(props.data.id);
+  }
+}
+
+function create(){
+  const c = new CreateOrUpdateChapterRequest(props.courseId, chapterTitle.value);
+  c.parentId = props.parentId;
+  c.contentUrl = fileName.value;
+  const { data, isFinished, error } = useAxios<DataResponse<Chapter>>(Api.CreateOrUpdateChapter, {
+    method: "post",
+    data: c
+  });
+  watch(isFinished, () => {
+    if (error.value){
+      message.error(error.value.message);
+      return;
+    }
+    if (!data.value?.success){
+      message.error(data.value?.message ?? "数据异常");
+      return;
+    }
+    emit("ok");
+  })
+}
+
+function update(id: number){
+  const c = new CreateOrUpdateChapterRequest(props.courseId, chapterTitle.value);
+  c.parentId = props.parentId;
+  c.contentUrl = fileName.value;
+  c.chapterId = id;
+  const { data, isFinished, error } = useAxios<DataResponse<Chapter>>(Api.CreateOrUpdateChapter, {
+    method: "PUT",
+    data: c
+  });
+  watch(isFinished, () => {
+    if (error.value){
+      message.error(error.value.message);
+      return;
+    }
+    if (!data.value?.success){
+      message.error(data.value?.message ?? "数据异常");
+      return;
+    }
+    emit("ok");
+  })
+}
 
 </script>
 

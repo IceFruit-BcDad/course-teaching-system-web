@@ -7,6 +7,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AAvatar: typeof import('ant-design-vue/es')['Avatar']
+    ACarousel: typeof import('ant-design-vue/es')['Carousel']
+    AList: typeof import('ant-design-vue/es')['List']
+    AListItem: typeof import('ant-design-vue/es')['ListItem']
+    AListItemMeta: typeof import('ant-design-vue/es')['ListItemMeta']
+    APagination: typeof import('ant-design-vue/es')['Pagination']
     APopconfirm: typeof import('ant-design-vue/es')['Popconfirm']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
@@ -26,6 +32,7 @@ declare module '@vue/runtime-core' {
     NavigationBar: typeof import('./src/components/NavigationBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UserManagerModal: typeof import('./src/components/UserManagerModal.vue')['default']
     VerticalClassificationMenu: typeof import('./src/components/VerticalClassificationMenu.vue')['default']
   }
 }

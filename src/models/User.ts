@@ -16,3 +16,17 @@ export class User {
         this.createTime = createTime;
     }
 }
+
+export class CreateOrUpdateUserRequest {
+    type: number;
+    phoneNumber: string;
+    name: string;
+    password?: string;
+
+
+    constructor(type: number, phoneNumber: string, name: string) {
+        this.type = type;
+        this.phoneNumber = phoneNumber;
+        this.name = name;
+    }
+}

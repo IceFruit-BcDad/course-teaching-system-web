@@ -36,7 +36,7 @@ const userStore = useUserStore();
 const userId = ref();
 const router = useRouter();
 const cookies = useCookies();
-
+const isAdminOrSupportUser = ref<boolean>(false);
 
 
 function loadLoginInfo(){
@@ -60,6 +60,7 @@ function loadUserInfo(userId: any){
       return;
     }
     userStore.setUser(data.value?.data)
+    isAdminOrSupportUser.value = data.value?.data.type == 100 || data.value?.data.type == 200;
   })
 }
 
@@ -89,6 +90,7 @@ function logout(){
       alert(data.value?.message ?? "数据异常");
       return;
     }
+    isAdminOrSupportUser.value = false;
     userStore.setUser(undefined);
     router.replace("/");
   })
@@ -107,11 +109,11 @@ function logout(){
           <RouterLink to="/course">课程</RouterLink>
           <div v-show="bar.courseTriggerStatus" class="b-line"></div>
         </li>
-        <li class="li-item" @mouseenter="liMouseEnter(toRef(bar, 'aboutTriggerStatus'))" @mouseleave="liMouseLeave(toRef(bar, 'aboutTriggerStatus'))">
-          <RouterLink to="/about">关于</RouterLink>
-          <div v-show="bar.aboutTriggerStatus" class="b-line"></div>
-        </li>
-        <li class="li-item" @mouseenter="liMouseEnter(toRef(bar, 'adminTriggerStatus'))" @mouseleave="liMouseLeave(toRef(bar, 'adminTriggerStatus'))">
+<!--        <li class="li-item" @mouseenter="liMouseEnter(toRef(bar, 'aboutTriggerStatus'))" @mouseleave="liMouseLeave(toRef(bar, 'aboutTriggerStatus'))">-->
+<!--          <RouterLink to="/about">关于</RouterLink>-->
+<!--          <div v-show="bar.aboutTriggerStatus" class="b-line"></div>-->
+<!--        </li>-->
+        <li v-show="isAdminOrSupportUser" class="li-item" @mouseenter="liMouseEnter(toRef(bar, 'adminTriggerStatus'))" @mouseleave="liMouseLeave(toRef(bar, 'adminTriggerStatus'))">
           <RouterLink to="/administrator" id="admin-link">管理<img id="admin-icon" src="../assets/arrow_down.png" alt="默认资源"></RouterLink>
           <div v-show="bar.adminTriggerStatus" class="admin-panel">
             <ul class="ul-g admin-nav">

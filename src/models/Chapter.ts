@@ -21,7 +21,7 @@ export class Chapter {
     }
 }
 
-export class CreateOrUpdateChapter {
+export class CreateOrUpdateChapterRequest {
     chapterId?: number;
     courseId: number;
     parentId?: number;

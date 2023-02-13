@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="menu-item" v-for="item in classificationArray">
-      <a class="item-title" href="#">{{ item.name }}</a>
+      <a class="item-title" @click="clickMenu(item.id)">{{ item.name }}</a>
       <span class="item-child">
         <template v-for="(cItem, index) in item.children" :key="item">
-          <a href="#">{{ cItem.name }}</a>
+          <a @click="clickMenu(cItem.id)">{{ cItem.name }}</a>
           <span v-if="index + 1 !== item.children?.length"> / </span>
         </template>
       </span>
@@ -19,8 +19,9 @@ import {Api} from "@/api";
 import {ListResponse} from "@/api/Response";
 import {Classification} from "@/models/Classification";
 import {AxiosResponse} from "axios";
+import {useRouter} from "vue-router";
 
-
+const router = useRouter();
 const classificationArray = ref<Array<Classification>>()
 
 const { data, isFinished } = useAxios<ListResponse<Classification>, AxiosResponse<ListResponse<Classification>>, any>(Api.GetClassifications);
@@ -31,6 +32,9 @@ watch(isFinished, () => {
   classificationArray.value = data.value.data.list;
 });
 
+function clickMenu(classificationId: number){
+  router.push("/course?classificationId=" + classificationId)
+}
 
 
 </script>
