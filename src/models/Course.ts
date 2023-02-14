@@ -7,17 +7,19 @@ export class Course {
   classificationName: string;
   createTime: string;
   lastModifyTime: string;
+  createUserName: string;
   coverUrl: string;
   chapters: Chapter[]
 
 
-  constructor(id: number, name: string, classificationId: number, classificationName: string, createTime: string, lastModifyTime: string, coverUrl: string, chapters: Chapter[]) {
+  constructor(id: number, name: string, classificationId: number, classificationName: string, createTime: string, lastModifyTime: string, createUserName: string, coverUrl: string, chapters: Chapter[]) {
     this.id = id;
     this.name = name;
     this.classificationId = classificationId;
     this.classificationName = classificationName;
     this.createTime = createTime;
     this.lastModifyTime = lastModifyTime;
+    this.createUserName = createUserName;
     this.coverUrl = coverUrl;
     this.chapters = chapters;
   }

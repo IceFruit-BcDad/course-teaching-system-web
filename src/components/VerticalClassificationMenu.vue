@@ -33,7 +33,7 @@ watch(isFinished, () => {
 });
 
 function clickMenu(classificationId: number){
-  router.push("/course?classificationId=" + classificationId)
+  router.push("/courses?classificationId=" + classificationId)
 }
 
 

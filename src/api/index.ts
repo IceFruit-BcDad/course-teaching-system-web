@@ -30,6 +30,10 @@ export class Api {
         return url;
     }
 
+    public static GetCourse(id: number): string{
+        return "/api/course/" + id.toString();
+    }
+
     public static CreateCourse = "/api/course";
 
     public static UpdateCourse(id: number): string{

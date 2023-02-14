@@ -1,10 +1,20 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import {computed, reactive} from 'vue';
+import {Course} from "@/models/Course";
+import {useRouter} from "vue-router";
 
-defineProps<{
-    courseName: string;
-    courseDesc: string
-}>()
+const props = defineProps<{
+    data: Course
+}>();
+
+const router = useRouter();
+
+const imageUrl = computed<string>(() => {
+  if (props.data.coverUrl.length == 0){
+    return "";
+  }
+  return import.meta.env.VITE_SERVICE_ADDRESS + "/files/" + props.data.coverUrl;
+});
 const courseItemStyle = reactive({
     isMouseEnter: false,
     margin: '1rem',
@@ -26,17 +36,21 @@ function courseMouseLeave(){
     courseItemStyle.height = '12rem'
     courseItemStyle.cursor = 'default'
 }
+
+function enterCourse(){
+  router.push("/course/" + props.data.id);
+}
 </script>
 
 <template>
-    <div class="course-item" @mouseenter="courseMouseEnter" @mouseleave="courseMouseLeave">
+    <div class="course-item" @click="enterCourse" @mouseenter="courseMouseEnter" @mouseleave="courseMouseLeave">
         <div class="course-icon-container">
-            <img class="course-icon" src="../assets/park.png" alt="默认资源">
+            <img class="course-icon" :src="imageUrl" alt="默认资源">
         </div>
         <div class="course-infomation-container">
-            <div class="course-name">{{courseName}}</div>
-            <div class="course-desc">{{courseDesc}}</div>
-            <div v-show="courseItemStyle.isMouseEnter" class="course-more-desc">更多描述:{{courseName}}</div>
+            <div class="course-name">{{data.name}}</div>
+            <div class="course-desc">{{data.createTime}}</div>
+            <div v-show="courseItemStyle.isMouseEnter" class="course-more-desc">课程分类:{{data.classificationName}}</div>
         </div>
     </div>
 </template>

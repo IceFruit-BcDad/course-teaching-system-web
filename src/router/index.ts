@@ -14,9 +14,21 @@ const router = createRouter({
             component: HomeView,
         },
         {
-            path: "/course",
-            name: "course",
+            path: "/courses",
+            name: "courses",
             component: () => import("../views/AllCourseView.vue"),
+        },
+        {
+            path: "/course/:courseId",
+            name: "course",
+            component: () => import("../views/CourseView.vue"),
+            props: true
+        },
+        {
+            path: "/md/:contentUrl",
+            name: "md",
+            component: () => import("../views/MdView.vue"),
+            props: true
         },
         {
             path: "/about",
@@ -29,30 +41,30 @@ const router = createRouter({
         {
             path: "/administrator",
             name: "administrator",
-            auth: ["ADMIN"],
+            // auth: ["ADMIN"],
             redirect: "/administrator/classification",
             component: () => import("../views/AdministratorView.vue"),
             children: [
                 {
                     path: "/administrator/classification",
                     name: "admin-classification",
-                    component: () => import("../views/AdminClassification.vue"),
+                    component: () => import("../views/AdminClassificationView.vue"),
                 },
                 {
                     path: "/administrator/course",
                     name: "admin-course",
-                    component: () => import("../views/AdminCourse.vue"),
+                    component: () => import("../views/AdminCourseView.vue"),
                 },
                 {
                     path: "/administrator/chapter/:id",
                     name: "admin-chapter",
-                    component: () => import("../views/AdminChapter.vue"),
+                    component: () => import("../views/AdminChapterView.vue"),
                     props: true,
                 },
                 {
                     path: "/administrator/user",
                     name: "admin-user",
-                    component: () => import("../views/AdminUser.vue"),
+                    component: () => import("../views/AdminUserView.vue"),
                 }
             ]
         }

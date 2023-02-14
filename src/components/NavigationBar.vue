@@ -106,7 +106,7 @@ function logout(){
           <div v-show="bar.homeTriggerStatus" class="b-line"></div>
         </li>
         <li class="li-item" @mouseenter="liMouseEnter(toRef(bar, 'courseTriggerStatus'))" @mouseleave="liMouseLeave(toRef(bar, 'courseTriggerStatus'))">
-          <RouterLink to="/course">课程</RouterLink>
+          <RouterLink to="/courses">课程</RouterLink>
           <div v-show="bar.courseTriggerStatus" class="b-line"></div>
         </li>
 <!--        <li class="li-item" @mouseenter="liMouseEnter(toRef(bar, 'aboutTriggerStatus'))" @mouseleave="liMouseLeave(toRef(bar, 'aboutTriggerStatus'))">-->
@@ -208,7 +208,7 @@ ol, ul, dl {
 }
 
 .admin-nav > li {
-  padding: 0.4rem;
+  padding: 0;
 }
 
 .li-admin {
@@ -229,6 +229,7 @@ ol, ul, dl {
   display: block;
   height: 100%;
   width: 100%;
+  padding: 0.4rem;
 }
 
 #nav-user-body {

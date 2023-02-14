@@ -75,6 +75,14 @@ const fileName = ref<string>("");
 
 
 const chapterTitle = ref<string>(props.data?.title ?? "");
+watch(() => props.show, (show) => {
+  if (!show){
+    fileList.value = []
+    fileName.value = "";
+    chapterTitle.value = "";
+  }
+});
+
 watch(() => props.data, async (chapter) => {
   console.log(chapter);
   if (chapter){

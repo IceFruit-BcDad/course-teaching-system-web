@@ -7,6 +7,7 @@ import {Course} from "@/models/Course";
 import {useAxios} from "@vueuse/integrations/useAxios";
 import {ListResponse} from "@/api/Response";
 import {Api} from "@/api";
+import {useRouter} from "vue-router";
 
 const courseList = ref<Course[]>();
 function loadData(){
@@ -21,6 +22,10 @@ function loadData(){
 
 loadData();
 
+const router = useRouter();
+function enterCourse(id: number){
+  router.push("/course/" + id);
+}
 </script>
 
 <template>
@@ -39,10 +44,9 @@ loadData();
               <right-circle-outlined />
             </div>
           </template>
-          <div><h3>1</h3></div>
-          <div><h3>2</h3></div>
-          <div><h3>3</h3></div>
-          <div><h3>4</h3></div>
+          <div class="carousel-item" v-for="course in courseList" :key="course.id" @click="enterCourse(course.id)">
+            <img class="carousel-img" :src="'/files/' + course.coverUrl">
+          </div>
         </a-carousel>
       </div>
     </div>
@@ -50,7 +54,7 @@ loadData();
       <h2>推荐课程</h2>
       <div class="course-list">
         <template class="course-item" v-for="course in courseList" :key="course.id">
-          <CourseItem :course-name="course.name" :course-desc="''" />
+          <CourseItem :data="course" />
         </template>
       </div>
     </div>
@@ -84,7 +88,7 @@ loadData();
 /*}*/
 
 .carousel-p {
-  width: 83%;
+  width: 82%;
   margin-left: 10px;
   border-radius: 0.4rem;
 }
@@ -127,5 +131,14 @@ loadData();
   flex-grow: 1;
 
   /* margin: -2rem 0 0 -2rem; */
+}
+
+.carousel-item {
+  height: 360px;
+  cursor: pointer;
+}
+.carousel-img {
+  width: 100%;
+  height: 100%;
 }
 </style>

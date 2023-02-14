@@ -19,28 +19,6 @@
           </a-popconfirm>
         </template>
       </template>
-<!--      <template #expandedRowRender="{ record }">-->
-<!--        <div v-if="isHaveChildren(record)">-->
-<!--          <a-list item-layout="horizontal" :data-source="record.children">-->
-<!--            <template #renderItem="{ item }">-->
-<!--              <a-list-item>-->
-<!--                <template #actions>-->
-<!--                  <a key="list-loadmore-edit">编辑</a>-->
-<!--                  <a key="list-loadmore-delete">删除</a>-->
-<!--                </template>-->
-<!--                <a-list-item-meta-->
-<!--                    :description="'修改时间:' + item.lastModifyTime"-->
-<!--                >-->
-<!--                  <template #title>-->
-<!--                    <div>{{ item.title }}</div>-->
-<!--                  </template>-->
-<!--                </a-list-item-meta>-->
-<!--              </a-list-item>-->
-<!--            </template>-->
-<!--          </a-list>-->
-<!--        </div>-->
-
-<!--      </template>-->
     </a-table>
     <ChapterManagerModal :show="modalData.modalStatus"
                          :data="modalData.data"

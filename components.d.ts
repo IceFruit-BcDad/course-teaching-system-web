@@ -7,18 +7,15 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AAvatar: typeof import('ant-design-vue/es')['Avatar']
     ACarousel: typeof import('ant-design-vue/es')['Carousel']
-    AList: typeof import('ant-design-vue/es')['List']
-    AListItem: typeof import('ant-design-vue/es')['ListItem']
-    AListItemMeta: typeof import('ant-design-vue/es')['ListItemMeta']
+    ACollapse: typeof import('ant-design-vue/es')['Collapse']
+    ACollapsePanel: typeof import('ant-design-vue/es')['CollapsePanel']
     APagination: typeof import('ant-design-vue/es')['Pagination']
     APopconfirm: typeof import('ant-design-vue/es')['Popconfirm']
-    ASelect: typeof import('ant-design-vue/es')['Select']
-    ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
     ATable: typeof import('ant-design-vue/es')['Table']
     AUpload: typeof import('ant-design-vue/es')['Upload']
     Carousel: typeof import('./src/components/Carousel.vue')['default']
+    ChapterList: typeof import('./src/components/ChapterList.vue')['default']
     ChapterManagerModal: typeof import('./src/components/ChapterManagerModal.vue')['default']
     ClassificationManagerModal: typeof import('./src/components/ClassificationManagerModal.vue')['default']
     CourseItem: typeof import('./src/components/CourseItem.vue')['default']

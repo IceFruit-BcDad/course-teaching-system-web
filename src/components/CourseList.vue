@@ -32,7 +32,7 @@ loadData();
   <div id="content">
     <div class="course-list">
       <template class="course-item" v-for="course in courseList" :key="course.id">
-        <CourseItem :course-name="course.name" :course-desc="''" />
+        <CourseItem :data="course" />
       </template>
     </div>
     <a-pagination id="list-pagination" v-model:current="current" :total="total" :defaultPageSize="limit" show-less-items />

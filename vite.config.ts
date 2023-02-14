@@ -25,6 +25,10 @@ export default ({mode}: any) => {
           target: envConfig.VITE_SERVICE_ADDRESS,
           changeOrigin: true
         },
+        "/files": {
+          target: envConfig.VITE_SERVICE_ADDRESS,
+          changeOrigin: true
+        }
       },
     },
   });
