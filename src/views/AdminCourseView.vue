@@ -21,12 +21,6 @@
           </a-popconfirm>
         </template>
       </template>
-      <!--    <template #expandedRowRender="{ record }">-->
-      <!--      <a-table style="margin: 0" :columns="chapterColumns" :data-source="record.chapters"  :scroll="{ x: 2000 }"></a-table>-->
-      <!--&lt;!&ndash;      <p style="margin: 0">&ndash;&gt;-->
-      <!--&lt;!&ndash;        {{ record.description }}&ndash;&gt;-->
-      <!--&lt;!&ndash;      </p>&ndash;&gt;-->
-      <!--    </template>-->
     </a-table>
 
     <CourseManagerModal :show="modalData.modalStatus" :data="modalData.data" @cancel="modalCancel" @ok="modalOk"/>

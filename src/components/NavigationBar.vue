@@ -36,7 +36,8 @@ const userStore = useUserStore();
 const userId = ref();
 const router = useRouter();
 const cookies = useCookies();
-const isAdminOrSupportUser = ref<boolean>(false);
+const isSupportUser = ref<boolean>(false);
+const isAdminUser = ref<boolean>(false);
 
 
 function loadLoginInfo(){
@@ -60,7 +61,8 @@ function loadUserInfo(userId: any){
       return;
     }
     userStore.setUser(data.value?.data)
-    isAdminOrSupportUser.value = data.value?.data.type == 100 || data.value?.data.type == 200;
+    isAdminUser.value = data.value?.data.type == 200;
+    isSupportUser.value = data.value?.data.type == 100;
   })
 }
 
@@ -90,7 +92,8 @@ function logout(){
       alert(data.value?.message ?? "数据异常");
       return;
     }
-    isAdminOrSupportUser.value = false;
+    isSupportUser.value = false;
+    isAdminUser.value = false;
     userStore.setUser(undefined);
     router.replace("/");
   })
@@ -113,14 +116,14 @@ function logout(){
 <!--          <RouterLink to="/about">关于</RouterLink>-->
 <!--          <div v-show="bar.aboutTriggerStatus" class="b-line"></div>-->
 <!--        </li>-->
-        <li v-show="isAdminOrSupportUser" class="li-item" @mouseenter="liMouseEnter(toRef(bar, 'adminTriggerStatus'))" @mouseleave="liMouseLeave(toRef(bar, 'adminTriggerStatus'))">
+        <li v-show="isAdminUser || isSupportUser" class="li-item" @mouseenter="liMouseEnter(toRef(bar, 'adminTriggerStatus'))" @mouseleave="liMouseLeave(toRef(bar, 'adminTriggerStatus'))">
           <RouterLink to="/administrator" id="admin-link">管理<img id="admin-icon" src="../assets/arrow_down.png" alt="默认资源"></RouterLink>
           <div v-show="bar.adminTriggerStatus" class="admin-panel">
             <ul class="ul-g admin-nav">
-              <li class="li-admin"><RouterLink class="admin-link" to="/administrator/classification">分类</RouterLink></li>
-              <li class="li-admin"><RouterLink class="admin-link" to="/administrator/course">课程</RouterLink></li>
+              <li v-show="isAdminUser" class="li-admin"><RouterLink class="admin-link" to="/administrator/classification">分类</RouterLink></li>
+              <li v-show="isSupportUser" class="li-admin"><RouterLink class="admin-link" to="/administrator/course">课程</RouterLink></li>
 <!--              <li class="li-admin"><RouterLink class="admin-link" to="/administrator/chapter">章节</RouterLink></li>-->
-              <li class="li-admin"><RouterLink class="admin-link" to="/administrator/user">用户</RouterLink></li>
+              <li v-show="isAdminUser" class="li-admin"><RouterLink class="admin-link" to="/administrator/user">用户</RouterLink></li>
             </ul>
           </div>
           <div v-show="bar.adminTriggerStatus" class="b-s-line"></div>

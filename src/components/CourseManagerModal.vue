@@ -109,6 +109,13 @@ const classificationLevel1Id = ref<number>(0);
 const classificationLevel2Id = ref<number>(0);
 
 const name = ref<string>(props.data?.name ?? "");
+watch(() => props.show, (show) => {
+  if (!show){
+    imageName.value = "";
+    name.value = "";
+    classificationLevel1Id.value = 0;
+  }
+});
 watch(() => props.data, async (course) => {
   console.log(course);
   if (course){

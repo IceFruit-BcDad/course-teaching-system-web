@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import VerticalClassificationMenuVue from '@/components/VerticalClassificationMenu.vue';
-import Carousel from "@/components/Carousel.vue";
 import {RightCircleOutlined, LeftCircleOutlined} from "@ant-design/icons-vue";
 import {ref, watch} from "vue";
 import {Course} from "@/models/Course";
